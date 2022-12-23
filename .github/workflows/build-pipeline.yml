@@ -3,7 +3,7 @@ name: Build
 on:
   # Triggers the workflow on push events
   push:
-    branches: [ develop, release/**, main, feature/** ]
+    branches: [ develop, release/**, master, feature/** ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,14 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
-          python-version: 3.6
+          python-version: 3.8
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2.0.0
         with:
-          poetry-version: 1.1.4
+          poetry-version: 1.1.15
       - name: Get version
         id: get-version
         run: |
@@ -62,8 +62,8 @@ jobs:
           echo "software_version=$(poetry version | awk '{print $2}')" >> $GITHUB_ENV
           echo "venue=uat" >> $GITHUB_ENV
       - name: Release version
-        # If triggered by push to the main branch
-        if: ${{ startsWith(github.ref, 'refs/heads/main') }}
+        # If triggered by push to the master branch
+        if: ${{ startsWith(github.ref, 'refs/heads/master') }}
         env:
           CURRENT_VERSION: ${{ steps.get-version.outputs.current_version }}
         # Remove -rc.* from end of version string
@@ -87,10 +87,10 @@ jobs:
             --project-name=${{ github.repository }}
 
       - name: Commit Version Bump
-        # If building develop, a release branch, or main then we commit the version bump back to the repo
+        # If building develop, a release branch, or master then we commit the version bump back to the repo
         if: |
           github.ref == 'refs/heads/develop' ||
-          github.ref == 'refs/heads/main'    ||
+          github.ref == 'refs/heads/master'    ||
           startsWith(github.ref, 'refs/heads/release')
         run: |
           git config --global user.name 'concise bot'
@@ -101,7 +101,7 @@ jobs:
         uses: actions-ecosystem/action-push-tag@v1
         if: |
           github.ref == 'refs/heads/develop' ||
-          github.ref == 'refs/heads/main'    ||
+          github.ref == 'refs/heads/master'    ||
           startsWith(github.ref, 'refs/heads/release')
         with:
           tag: ${{ env.software_version }}
