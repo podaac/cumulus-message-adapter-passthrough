@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - fixed release build
   - upgrade few actions, python version to 3.8 and poetry 1.1.4 -> 1.1.15
 ### Changed
+- **PODAAC-5942**
+  - python 3.9.  cumulus-process-py 1.3.0
 ### Deprecated
 ### Removed
 ### Fixed
