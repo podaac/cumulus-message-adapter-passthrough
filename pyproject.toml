@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cumulus-message-adapter-passthrough"
-version = "2.3.0-alpha.0"
+version = "2.3.0a1"
 
 description = "A simple lambda which pass input through output"
 authors = ["PODAAC IngestAndArchive <podaac@jpl.nasa.gov>"]
